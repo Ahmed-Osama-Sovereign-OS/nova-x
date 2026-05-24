@@ -1,54 +1,55 @@
 /* ================================= */
-/* NOVA X UNIVERSE */
+/* NOVA X UNIVERSE v0.2 */
 /* ================================= */
 
 class Universe {
 
     constructor() {
 
-        /* ========================= */
         /* SCENE */
-        /* ========================= */
 
         this.scene = new THREE.Scene();
 
         this.scene.fog = new THREE.FogExp2(
             0x020611,
-            0.0035
+            0.003
         );
 
-        /* ========================= */
         /* CAMERA */
-        /* ========================= */
 
-        this.camera = new THREE.PerspectiveCamera(
+        this.camera =
+            new THREE.PerspectiveCamera(
 
-            75,
+                75,
 
-            window.innerWidth / window.innerHeight,
+                window.innerWidth /
+                window.innerHeight,
 
-            0.1,
+                0.1,
 
-            1000
-        );
+                1000
+            );
 
         this.camera.position.z = 60;
 
-        /* ========================= */
         /* RENDERER */
-        /* ========================= */
 
-        this.renderer = new THREE.WebGLRenderer({
+        this.renderer =
+            new THREE.WebGLRenderer({
 
-            canvas: document.getElementById("bg"),
+                canvas:
+                    document.getElementById("bg"),
 
-            antialias: true,
+                antialias: true,
 
-            alpha: true
-        });
+                alpha: true
+            });
 
         this.renderer.setPixelRatio(
-            Math.min(window.devicePixelRatio, 1.5)
+            Math.min(
+                window.devicePixelRatio,
+                1.5
+            )
         );
 
         this.renderer.setSize(
@@ -61,27 +62,19 @@ class Universe {
             1
         );
 
-        /* ========================= */
         /* LIGHTS */
-        /* ========================= */
 
         this.createLights();
 
-        /* ========================= */
-        /* ENERGY RINGS */
-        /* ========================= */
+        /* ENERGY */
 
         this.createEnergyRing();
 
-        /* ========================= */
         /* CORE */
-        /* ========================= */
 
         this.createCore();
 
-        /* ========================= */
         /* EVENTS */
-        /* ========================= */
 
         this.setupResize();
     }
@@ -92,22 +85,18 @@ class Universe {
 
     createLights() {
 
-        /* AMBIENT */
-
         const ambient =
             new THREE.AmbientLight(
                 0x3366ff,
-                0.4
+                0.45
             );
 
         this.scene.add(ambient);
 
-        /* BLUE LIGHT */
-
         const blueLight =
             new THREE.PointLight(
                 0x00ccff,
-                25,
+                35,
                 300
             );
 
@@ -119,12 +108,10 @@ class Universe {
 
         this.scene.add(blueLight);
 
-        /* PURPLE LIGHT */
-
         const purpleLight =
             new THREE.PointLight(
-                0x8844ff,
-                18,
+                0xaa55ff,
+                25,
                 250
             );
 
@@ -138,7 +125,7 @@ class Universe {
     }
 
     /* ================================= */
-    /* ENERGY RING */
+    /* ENERGY RINGS */
     /* ================================= */
 
     createEnergyRing() {
@@ -158,7 +145,7 @@ class Universe {
 
                 transparent: true,
 
-                opacity: 0.5
+                opacity: 0.4
             });
 
         this.energyRing =
@@ -174,12 +161,12 @@ class Universe {
             this.energyRing
         );
 
-        /* SECOND RING */
+        /* SECOND */
 
         const geometry2 =
             new THREE.TorusGeometry(
                 24,
-                0.25,
+                0.22,
                 16,
                 120
             );
@@ -191,7 +178,7 @@ class Universe {
 
                 transparent: true,
 
-                opacity: 0.25
+                opacity: 0.22
             });
 
         this.energyRing2 =
@@ -214,11 +201,13 @@ class Universe {
 
     createCore() {
 
+        /* MAIN CORE */
+
         const geometry =
             new THREE.SphereGeometry(
                 3,
-                32,
-                32
+                64,
+                64
             );
 
         const material =
@@ -228,7 +217,7 @@ class Universe {
 
                 transparent: true,
 
-                opacity: 0.9
+                opacity: 0.95
             });
 
         this.core =
@@ -239,6 +228,35 @@ class Universe {
 
         this.scene.add(
             this.core
+        );
+
+        /* OUTER GLOW */
+
+        const glowGeometry =
+            new THREE.SphereGeometry(
+                4.2,
+                64,
+                64
+            );
+
+        const glowMaterial =
+            new THREE.MeshBasicMaterial({
+
+                color: 0x00ccff,
+
+                transparent: true,
+
+                opacity: 0.08
+            });
+
+        this.glow =
+            new THREE.Mesh(
+                glowGeometry,
+                glowMaterial
+            );
+
+        this.scene.add(
+            this.glow
         );
     }
 
@@ -282,17 +300,33 @@ class Universe {
 
         /* PULSE */
 
-        const scale =
+        const pulse =
             1 +
-            Math.sin(time * 0.003) * 0.08;
+            Math.sin(time * 0.003) * 0.12;
 
         this.core.scale.set(
-            scale,
-            scale,
-            scale
+            pulse,
+            pulse,
+            pulse
         );
 
-        /* ENERGY RINGS */
+        /* GLOW */
+
+        const glowScale =
+            1.1 +
+            Math.sin(time * 0.0025) * 0.08;
+
+        this.glow.scale.set(
+            glowScale,
+            glowScale,
+            glowScale
+        );
+
+        this.glow.material.opacity =
+            0.08 +
+            Math.sin(time * 0.003) * 0.03;
+
+        /* RINGS */
 
         this.energyRing.rotation.z +=
             0.004 * energy;
@@ -306,7 +340,7 @@ class Universe {
         this.energyRing2.rotation.y +=
             0.002;
 
-        /* CAMERA FLOAT */
+        /* CAMERA */
 
         this.camera.position.y =
             Math.sin(time * 0.0005) * 2;
