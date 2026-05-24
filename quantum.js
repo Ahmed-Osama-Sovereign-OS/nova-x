@@ -1,5 +1,5 @@
 /* ================================= */
-/* NOVA X QUANTUM ENGINE */
+/* NOVA X QUANTUM ENGINE v0.2 */
 /* ================================= */
 
 class QuantumEngine {
@@ -31,10 +31,12 @@ class QuantumEngine {
             (e) => {
 
                 this.mouse.x =
-                    (e.clientX / window.innerWidth - 0.5);
+                    (e.clientX /
+                        window.innerWidth - 0.5);
 
                 this.mouse.y =
-                    (e.clientY / window.innerHeight - 0.5);
+                    (e.clientY /
+                        window.innerHeight - 0.5);
             }
         );
 
@@ -50,16 +52,18 @@ class QuantumEngine {
     }
 
     /* ================================= */
-    /* CREATE BURST */
+    /* BURST */
     /* ================================= */
 
     createQuantumBurst() {
 
+        /* MAIN WAVE */
+
         const geometry =
             new THREE.RingGeometry(
                 1,
-                1.5,
-                64
+                1.8,
+                128
             );
 
         const material =
@@ -69,7 +73,7 @@ class QuantumEngine {
 
                 transparent: true,
 
-                opacity: 0.8,
+                opacity: 1,
 
                 side: THREE.DoubleSide
             });
@@ -81,8 +85,11 @@ class QuantumEngine {
             );
 
         ring.position.set(
+
             this.mouse.x * 25,
+
             -this.mouse.y * 15,
+
             0
         );
 
@@ -94,7 +101,55 @@ class QuantumEngine {
 
             scale: 1,
 
-            opacity: 0.8
+            opacity: 1,
+
+            rotation:
+                Math.random() * Math.PI
+        });
+
+        /* SECOND WAVE */
+
+        const geometry2 =
+            new THREE.RingGeometry(
+                0.5,
+                1,
+                128
+            );
+
+        const material2 =
+            new THREE.MeshBasicMaterial({
+
+                color: 0xaa55ff,
+
+                transparent: true,
+
+                opacity: 0.8,
+
+                side: THREE.DoubleSide
+            });
+
+        const ring2 =
+            new THREE.Mesh(
+                geometry2,
+                material2
+            );
+
+        ring2.position.copy(
+            ring.position
+        );
+
+        this.scene.add(ring2);
+
+        this.waves.push({
+
+            mesh: ring2,
+
+            scale: 1,
+
+            opacity: 0.8,
+
+            rotation:
+                -Math.random() * Math.PI
         });
 
         /* FLASH */
@@ -110,9 +165,9 @@ class QuantumEngine {
 
         const geometry =
             new THREE.SphereGeometry(
-                1.2,
-                16,
-                16
+                1.5,
+                32,
+                32
             );
 
         const material =
@@ -122,7 +177,7 @@ class QuantumEngine {
 
                 transparent: true,
 
-                opacity: 0.9
+                opacity: 1
             });
 
         const flash =
@@ -132,8 +187,11 @@ class QuantumEngine {
             );
 
         flash.position.set(
+
             this.mouse.x * 25,
+
             -this.mouse.y * 15,
+
             0
         );
 
@@ -145,7 +203,7 @@ class QuantumEngine {
 
             scale: 1,
 
-            opacity: 0.9
+            opacity: 1
         });
     }
 
@@ -157,24 +215,35 @@ class QuantumEngine {
 
         /* WAVES */
 
-        for (let i = this.waves.length - 1; i >= 0; i--) {
+        for (
+            let i = this.waves.length - 1;
+            i >= 0;
+            i--
+        ) {
 
-            const wave = this.waves[i];
+            const wave =
+                this.waves[i];
 
-            wave.scale += 0.15 + chaos * 0.01;
+            wave.scale +=
+                0.18 + chaos * 0.015;
 
-            wave.opacity -= 0.012;
+            wave.opacity -=
+                0.015;
 
             wave.mesh.scale.set(
+
                 wave.scale,
+
                 wave.scale,
+
                 wave.scale
             );
 
             wave.mesh.material.opacity =
                 wave.opacity;
 
-            wave.mesh.rotation.z += 0.01;
+            wave.mesh.rotation.z +=
+                0.02 + wave.rotation * 0.002;
 
             if (wave.opacity <= 0) {
 
@@ -188,18 +257,25 @@ class QuantumEngine {
 
         /* FLASHES */
 
-        for (let i = this.flashMeshes.length - 1; i >= 0; i--) {
+        for (
+            let i = this.flashMeshes.length - 1;
+            i >= 0;
+            i--
+        ) {
 
             const flash =
                 this.flashMeshes[i];
 
-            flash.scale += 0.25;
+            flash.scale += 0.3;
 
-            flash.opacity -= 0.03;
+            flash.opacity -= 0.04;
 
             flash.mesh.scale.set(
+
                 flash.scale,
+
                 flash.scale,
+
                 flash.scale
             );
 
