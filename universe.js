@@ -1,12 +1,10 @@
 /* ================================= */
-/* NOVA X UNIVERSE v0.5 */
+/* NOVA X UNIVERSE v0.6 */
 /* ================================= */
 
 class Universe {
 
     constructor() {
-
-        /* SCENE */
 
         this.scene =
             new THREE.Scene();
@@ -48,7 +46,6 @@ class Universe {
             });
 
         this.renderer.setPixelRatio(
-
             Math.min(
                 window.devicePixelRatio,
                 1.5
@@ -56,7 +53,6 @@ class Universe {
         );
 
         this.renderer.setSize(
-
             window.innerWidth,
             window.innerHeight
         );
@@ -66,21 +62,47 @@ class Universe {
             1
         );
 
-        /* LIGHTS */
+        /* MOUSE */
+
+        this.mouse = {
+            x: 0,
+            y: 0
+        };
+
+        this.setupMouse();
+
+        /* SYSTEMS */
 
         this.createLights();
 
-        /* ENERGY */
-
         this.createEnergyRing();
-
-        /* CORE */
 
         this.createCore();
 
-        /* EVENTS */
-
         this.setupResize();
+    }
+
+    /* ================================= */
+    /* MOUSE */
+    /* ================================= */
+
+    setupMouse() {
+
+        window.addEventListener(
+            "mousemove",
+            (e) => {
+
+                this.mouse.x =
+
+                    (e.clientX /
+                        window.innerWidth - 0.5);
+
+                this.mouse.y =
+
+                    (e.clientY /
+                        window.innerHeight - 0.5);
+            }
+        );
     }
 
     /* ================================= */
@@ -209,8 +231,6 @@ class Universe {
 
     createCore() {
 
-        /* MAIN CORE */
-
         const geometry =
             new THREE.SphereGeometry(
                 3,
@@ -267,7 +287,7 @@ class Universe {
             this.innerCore
         );
 
-        /* OUTER GLOW */
+        /* GLOW */
 
         const glowGeometry =
             new THREE.SphereGeometry(
@@ -331,15 +351,39 @@ class Universe {
 
     update(time, gravity, energy) {
 
-        /* MAIN CORE */
+        /* SENTIENT FOLLOW */
+
+        this.core.position.x +=
+
+            (
+                this.mouse.x * 8 -
+
+                this.core.position.x
+            ) * 0.03;
+
+        this.core.position.y +=
+
+            (
+                -this.mouse.y * 5 -
+
+                this.core.position.y
+            ) * 0.03;
+
+        this.innerCore.position.copy(
+            this.core.position
+        );
+
+        this.glow.position.copy(
+            this.core.position
+        );
+
+        /* ROTATION */
 
         this.core.rotation.y +=
             0.01 * gravity;
 
         this.core.rotation.x +=
             0.003;
-
-        /* INNER CORE */
 
         this.innerCore.rotation.y -=
             0.03;
@@ -363,7 +407,7 @@ class Universe {
             pulse
         );
 
-        /* INNER PULSE */
+        /* INNER */
 
         const innerPulse =
 
@@ -426,9 +470,7 @@ class Universe {
             ) * 2;
 
         this.camera.lookAt(
-            0,
-            0,
-            0
+            this.core.position
         );
     }
 
