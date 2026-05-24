@@ -1,0 +1,383 @@
+/* ================================= */
+/* RESET */
+/* ================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================================= */
+/* BODY */
+/* ================================= */
+
+body {
+    overflow: hidden;
+    background: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+/* ================================= */
+/* CANVAS */
+/* ================================= */
+
+#bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ================================= */
+/* BOOT SCREEN */
+/* ================================= */
+
+#boot-screen {
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at center,
+        rgba(20, 20, 40, 0.9),
+        rgba(0, 0, 0, 1));
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+
+    animation: bootFadeOut 2s ease forwards;
+    animation-delay: 6s;
+}
+
+/* ================================= */
+/* BOOT LOGO */
+/* ================================= */
+
+.boot-logo {
+    font-size: 72px;
+    font-weight: bold;
+    letter-spacing: 12px;
+
+    color: #66ccff;
+
+    text-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff,
+        0 0 40px #00ccff;
+
+    animation:
+        logoPulse 2s infinite alternate;
+}
+
+/* ================================= */
+/* SUBTITLE */
+/* ================================= */
+
+.boot-subtitle {
+    margin-top: 15px;
+
+    color: #999;
+
+    font-size: 14px;
+
+    letter-spacing: 6px;
+}
+
+/* ================================= */
+/* BOOT LINES */
+/* ================================= */
+
+.boot-lines {
+    margin-top: 60px;
+
+    width: 420px;
+}
+
+.boot-line {
+    margin: 12px 0;
+
+    color: #55ddff;
+
+    font-size: 14px;
+
+    opacity: 0;
+
+    animation: lineAppear 0.5s forwards;
+}
+
+.boot-line:nth-child(1) {
+    animation-delay: 1s;
+}
+
+.boot-line:nth-child(2) {
+    animation-delay: 2s;
+}
+
+.boot-line:nth-child(3) {
+    animation-delay: 3s;
+}
+
+.boot-line:nth-child(4) {
+    animation-delay: 4s;
+}
+
+/* ================================= */
+/* LOADING BAR */
+/* ================================= */
+
+.loading-bar {
+    width: 420px;
+    height: 10px;
+
+    margin-top: 40px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.08);
+
+    overflow: hidden;
+
+    border: 1px solid rgba(0,255,255,0.2);
+}
+
+.loading-fill {
+    height: 100%;
+    width: 0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00ccff,
+            #7a5cff,
+            #00ccff
+        );
+
+    box-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff;
+
+    animation: loadingMove 6s linear forwards;
+}
+
+/* ================================= */
+/* UI */
+/* ================================= */
+
+#ui {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 100;
+}
+
+/* ================================= */
+/* TOP PANEL */
+/* ================================= */
+
+#top-panel {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    width: 320px;
+
+    padding: 18px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(10, 20, 40, 0.35);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid rgba(0,255,255,0.2);
+
+    box-shadow:
+        0 0 20px rgba(0,255,255,0.15);
+}
+
+.panel-title {
+    font-size: 28px;
+    font-weight: bold;
+
+    color: #66ccff;
+
+    letter-spacing: 4px;
+}
+
+.panel-status {
+    margin-top: 8px;
+
+    color: #9bdcff;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+/* ================================= */
+/* CONTROL PANEL */
+/* ================================= */
+
+#control-panel {
+    position: absolute;
+
+    top: 120px;
+    left: 20px;
+
+    width: 320px;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(10,20,40,0.28);
+
+    backdrop-filter: blur(14px);
+
+    border:
+        1px solid rgba(0,255,255,0.18);
+
+    box-shadow:
+        0 0 25px rgba(0,255,255,0.12);
+
+    pointer-events: auto;
+}
+
+/* ================================= */
+/* CONTROL TITLE */
+/* ================================= */
+
+.control-title {
+    font-size: 16px;
+
+    margin-bottom: 20px;
+
+    color: #66ccff;
+
+    letter-spacing: 3px;
+}
+
+/* ================================= */
+/* CONTROL GROUP */
+/* ================================= */
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #aaddff;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+}
+
+/* ================================= */
+/* RANGE */
+/* ================================= */
+
+input[type="range"] {
+    width: 100%;
+
+    appearance: none;
+
+    height: 6px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: #00ccff;
+
+    box-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff;
+
+    cursor: pointer;
+}
+
+/* ================================= */
+/* ANIMATIONS */
+/* ================================= */
+
+@keyframes logoPulse {
+
+    from {
+        transform: scale(1);
+
+        text-shadow:
+            0 0 10px #00ccff,
+            0 0 20px #00ccff;
+    }
+
+    to {
+        transform: scale(1.03);
+
+        text-shadow:
+            0 0 20px #00ccff,
+            0 0 40px #00ccff,
+            0 0 80px #7a5cff;
+    }
+}
+
+@keyframes lineAppear {
+
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes loadingMove {
+
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes bootFadeOut {
+
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>NOVA X — Quantum Reality Engine</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- THREE JS -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- BOOT SCREEN -->
+    <!-- ========================= -->
+
+    <div id="boot-screen">
+
+        <div class="boot-logo">
+            NOVA X
+        </div>
+
+        <div class="boot-subtitle">
+            QUANTUM REALITY ENGINE
+        </div>
+
+        <div class="boot-lines">
+
+            <div class="boot-line">
+                INITIALIZING QUANTUM CORE...
+            </div>
+
+            <div class="boot-line">
+                LOADING PROBABILITY ENGINE...
+            </div>
+
+            <div class="boot-line">
+                STABILIZING REALITY MATRIX...
+            </div>
+
+            <div class="boot-line">
+                LINKING ENTANGLEMENT SYSTEM...
+            </div>
+
+        </div>
+
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- MAIN UI -->
+    <!-- ========================= -->
+
+    <div id="ui">
+
+        <div id="top-panel">
+
+            <div class="panel-title">
+                NOVA X
+            </div>
+
+            <div class="panel-status">
+                QUANTUM FIELD ACTIVE
+            </div>
+
+        </div>
+
+        <!-- CONTROL PANEL -->
+
+        <div id="control-panel">
+
+            <div class="control-title">
+                REALITY CONTROLS
+            </div>
+
+            <!-- GRAVITY -->
+
+            <div class="control-group">
+                <label>Gravity</label>
+
+                <input
+                    type="range"
+                    id="gravity"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value="3"
+                />
+            </div>
+
+            <!-- CHAOS -->
+
+            <div class="control-group">
+                <label>Chaos</label>
+
+                <input
+                    type="range"
+                    id="chaos"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value="4"
+                />
+            </div>
+
+            <!-- TIME -->
+
+            <div class="control-group">
+                <label>Time Speed</label>
+
+                <input
+                    type="range"
+                    id="timeSpeed"
+                    min="0.1"
+                    max="5"
+                    step="0.1"
+                    value="1"
+                />
+            </div>
+
+            <!-- ENERGY -->
+
+            <div class="control-group">
+                <label>Energy</label>
+
+                <input
+                    type="range"
+                    id="energy"
+                    min="1"
+                    max="20"
+                    step="1"
+                    value="8"
+                />
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- CANVAS -->
+    <!-- ========================= -->
+
+    <canvas id="bg"></canvas>
+
+    <!-- ========================= -->
+    <!-- SCRIPTS -->
+    <!-- ========================= -->
+
+    <script src="particles.js"></script>
+    <script src="universe.js"></script>
+    <script src="quantum.js"></script>
+    <script src="controls.js"></script>
+    <script src="ai.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
