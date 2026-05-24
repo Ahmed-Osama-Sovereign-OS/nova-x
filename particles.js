@@ -1,5 +1,5 @@
 /* ================================= */
-/* NOVA X PARTICLE SYSTEM v0.4 */
+/* NOVA X PARTICLE SYSTEM v0.5 */
 /* ================================= */
 
 class ParticleSystem {
@@ -17,6 +17,8 @@ class ParticleSystem {
 
         this.createNeuralField();
 
+        this.createBlackHole();
+
         this.setupMouse();
     }
 
@@ -26,7 +28,7 @@ class ParticleSystem {
 
     createParticles() {
 
-        const count = 2200;
+        const count = 2500;
 
         const geometry =
             new THREE.BufferGeometry();
@@ -34,18 +36,26 @@ class ParticleSystem {
         const positions = [];
         const colors = [];
 
+        this.originalPositions = [];
+
         for (let i = 0; i < count; i++) {
 
             const x =
-                (Math.random() - 0.5) * 280;
+                (Math.random() - 0.5) * 320;
 
             const y =
-                (Math.random() - 0.5) * 280;
+                (Math.random() - 0.5) * 320;
 
             const z =
-                (Math.random() - 0.5) * 280;
+                (Math.random() - 0.5) * 320;
 
             positions.push(x, y, z);
+
+            this.originalPositions.push(
+                x,
+                y,
+                z
+            );
 
             const blue =
                 0.6 + Math.random() * 0.4;
@@ -83,7 +93,7 @@ class ParticleSystem {
         const material =
             new THREE.PointsMaterial({
 
-                size: 0.3,
+                size: 0.28,
 
                 vertexColors: true,
 
@@ -119,7 +129,7 @@ class ParticleSystem {
 
         const vertices = [];
 
-        for (let i = 0; i < 450; i++) {
+        for (let i = 0; i < 500; i++) {
 
             vertices.push(
 
@@ -153,7 +163,7 @@ class ParticleSystem {
 
                 transparent: true,
 
-                opacity: 0.08
+                opacity: 0.06
             });
 
         this.lines =
@@ -201,6 +211,75 @@ class ParticleSystem {
 
         this.scene.add(
             this.neuralField
+        );
+    }
+
+    /* ================================= */
+    /* BLACK HOLE */
+    /* ================================= */
+
+    createBlackHole() {
+
+        const geometry =
+            new THREE.SphereGeometry(
+                2.5,
+                64,
+                64
+            );
+
+        const material =
+            new THREE.MeshBasicMaterial({
+
+                color: 0x000000
+            });
+
+        this.blackHole =
+            new THREE.Mesh(
+                geometry,
+                material
+            );
+
+        this.blackHole.position.set(
+            18,
+            0,
+            0
+        );
+
+        this.scene.add(
+            this.blackHole
+        );
+
+        /* ACCRETION RING */
+
+        const ringGeometry =
+            new THREE.TorusGeometry(
+                4,
+                0.3,
+                16,
+                120
+            );
+
+        const ringMaterial =
+            new THREE.MeshBasicMaterial({
+
+                color: 0xaa55ff,
+
+                transparent: true,
+
+                opacity: 0.4
+            });
+
+        this.blackHoleRing =
+            new THREE.Mesh(
+                ringGeometry,
+                ringMaterial
+            );
+
+        this.blackHoleRing.rotation.x =
+            Math.PI / 2;
+
+        this.blackHole.add(
+            this.blackHoleRing
         );
     }
 
@@ -255,11 +334,73 @@ class ParticleSystem {
 
         this.points.material.size =
 
-            0.3 +
+            0.28 +
 
             Math.sin(
                 time * 0.002
             ) * 0.08;
+
+        /* BLACK HOLE MOTION */
+
+        this.blackHole.position.x =
+
+            Math.cos(
+                time * 0.0004
+            ) * 18;
+
+        this.blackHole.position.z =
+
+            Math.sin(
+                time * 0.0004
+            ) * 18;
+
+        this.blackHole.rotation.y +=
+            0.02;
+
+        this.blackHoleRing.rotation.z +=
+            0.05;
+
+        /* PARTICLE GRAVITY */
+
+        const positions =
+            this.points.geometry.attributes.position.array;
+
+        for (let i = 0; i < positions.length; i += 3) {
+
+            const dx =
+                this.blackHole.position.x -
+                positions[i];
+
+            const dy =
+                this.blackHole.position.y -
+                positions[i + 1];
+
+            const dz =
+                this.blackHole.position.z -
+                positions[i + 2];
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy +
+                    dz * dz
+                );
+
+            if (distance < 40) {
+
+                positions[i] +=
+                    dx * 0.0008;
+
+                positions[i + 1] +=
+                    dy * 0.0008;
+
+                positions[i + 2] +=
+                    dz * 0.0008;
+            }
+        }
+
+        this.points.geometry.attributes.position.needsUpdate =
+            true;
 
         /* CONNECTIONS */
 
@@ -268,12 +409,6 @@ class ParticleSystem {
 
         this.lines.rotation.z +=
             0.0001;
-
-        this.lines.position.y =
-
-            Math.cos(
-                time * 0.0003
-            ) * 1.5;
 
         /* NEURAL FIELD */
 
@@ -299,13 +434,5 @@ class ParticleSystem {
             pulse,
             pulse
         );
-
-        this.neuralField.material.opacity =
-
-            0.08 +
-
-            Math.sin(
-                time * 0.003
-            ) * 0.04;
     }
 }
