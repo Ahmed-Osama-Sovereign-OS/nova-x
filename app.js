@@ -1,15 +1,16 @@
 /* ================================= */
-/* NOVA X MAIN ENGINE */
+/* NOVA X MAIN ENGINE v0.4 */
 /* ================================= */
 
 /* ================================= */
 /* CREATE UNIVERSE */
 /* ================================= */
 
-const universe = new Universe();
+const universe =
+    new Universe();
 
 /* ================================= */
-/* PARTICLE SYSTEM */
+/* PARTICLES */
 /* ================================= */
 
 const particles =
@@ -18,7 +19,7 @@ const particles =
     );
 
 /* ================================= */
-/* QUANTUM ENGINE */
+/* QUANTUM */
 /* ================================= */
 
 const quantum =
@@ -34,7 +35,7 @@ const controls =
     new Controls();
 
 /* ================================= */
-/* AI SYSTEM */
+/* AI */
 /* ================================= */
 
 const ai =
@@ -43,11 +44,10 @@ const ai =
     );
 
 /* ================================= */
-/* CLOCK */
+/* DISTORTION */
 /* ================================= */
 
-const clock =
-    new THREE.Clock();
+let distortion = 0;
 
 /* ================================= */
 /* ANIMATION LOOP */
@@ -62,8 +62,39 @@ function animate() {
     /* TIME */
 
     const elapsed =
+
         performance.now() *
+
         controls.timeSpeed;
+
+    /* DISTORTION */
+
+    distortion =
+
+        Math.sin(
+            elapsed * 0.0007
+        ) *
+
+        controls.chaos *
+
+        0.002;
+
+    /* CAMERA SHAKE */
+
+    universe.camera.rotation.z =
+        distortion;
+
+    universe.camera.position.x +=
+
+        Math.sin(
+            elapsed * 0.001
+        ) * 0.003;
+
+    universe.camera.position.y +=
+
+        Math.cos(
+            elapsed * 0.0012
+        ) * 0.003;
 
     /* UPDATE SYSTEMS */
 
