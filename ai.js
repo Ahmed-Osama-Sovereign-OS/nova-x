@@ -1,5 +1,5 @@
 /* ================================= */
-/* NOVA X AI SYSTEM v0.2 */
+/* NOVA X AI SYSTEM v0.3 */
 /* ================================= */
 
 class AISystem {
@@ -12,9 +12,20 @@ class AISystem {
 
         this.drift = 0;
 
-        this.noise = Math.random() * 1000;
+        this.noise =
+            Math.random() * 1000;
 
-        /* CREATE PORTALS */
+        /* QUANTUM STATES */
+
+        this.quantumState = 0;
+
+        this.realityStress = 0;
+
+        this.gravityShift = 1;
+
+        this.timeFracture = 0;
+
+        /* PORTALS */
 
         this.createPortals();
     }
@@ -66,8 +77,97 @@ class AISystem {
                 portal
             );
 
-            this.portals.push(portal);
+            this.portals.push(
+                portal
+            );
         }
+    }
+
+    /* ================================= */
+    /* QUANTUM LAWS */
+    /* ================================= */
+
+    updateQuantumLaws(time, controls) {
+
+        /* REALITY STRESS */
+
+        this.realityStress =
+
+            Math.sin(
+                time * 0.00015
+            ) *
+
+            controls.chaos;
+
+        /* TIME FRACTURE */
+
+        this.timeFracture =
+
+            Math.cos(
+                time * 0.0002
+            ) * 0.5;
+
+        /* GRAVITY SHIFT */
+
+        this.gravityShift =
+
+            1 +
+
+            Math.sin(
+                time * 0.0004
+            ) * 0.3;
+
+        /* QUANTUM STATE */
+
+        this.quantumState =
+
+            Math.sin(
+                time * 0.0001
+            );
+
+        /* SCENE DISTORTION */
+
+        this.universe.scene.rotation.x =
+
+            Math.sin(
+                time * 0.0003
+            ) *
+
+            0.02 *
+
+            controls.chaos;
+
+        this.universe.scene.rotation.y =
+
+            Math.cos(
+                time * 0.0002
+            ) *
+
+            0.02 *
+
+            controls.chaos;
+
+        /* CAMERA FRACTURE */
+
+        this.universe.camera.position.x +=
+
+            Math.sin(
+                time * 0.001
+            ) *
+
+            this.realityStress *
+
+            0.01;
+
+        this.universe.camera.position.y +=
+
+            Math.cos(
+                time * 0.0012
+            ) *
+
+            this.realityStress *
+
+            0.01;
     }
 
     /* ================================= */
@@ -76,15 +176,26 @@ class AISystem {
 
     update(time, controls) {
 
+        /* QUANTUM LAWS */
+
+        this.updateQuantumLaws(
+            time,
+            controls
+        );
+
         /* ENERGY */
 
         this.energyPulse =
 
-            Math.sin(time * 0.0015) * 0.5;
+            Math.sin(
+                time * 0.0015
+            ) * 0.5;
 
         this.drift =
 
-            Math.cos(time * 0.0008) * 0.3;
+            Math.cos(
+                time * 0.0008
+            ) * 0.3;
 
         /* CORE COLOR */
 
@@ -92,7 +203,9 @@ class AISystem {
 
             0.55 +
 
-            Math.sin(time * 0.0004) * 0.08;
+            Math.sin(
+                time * 0.0004
+            ) * 0.08;
 
         const color =
             new THREE.Color();
@@ -106,27 +219,39 @@ class AISystem {
         this.universe.core.material.color =
             color;
 
-        /* CORE */
+        /* INNER CORE FLASH */
+
+        this.universe.innerCore.material.opacity =
+
+            0.6 +
+
+            Math.sin(
+                time * 0.006
+            ) * 0.4;
+
+        /* CORE OPACITY */
 
         this.universe.core.material.opacity =
 
             0.75 +
 
-            Math.sin(time * 0.002) * 0.2;
+            Math.sin(
+                time * 0.002
+            ) * 0.2;
 
         /* CAMERA */
-
-        this.universe.camera.position.x =
-
-            Math.sin(time * 0.0003) * 4;
 
         this.universe.camera.position.z =
 
             60 +
 
-            Math.sin(time * 0.0007) * 3;
+            Math.sin(
+                time * 0.0007
+            ) * 3 +
 
-        /* RINGS */
+            this.timeFracture * 2;
+
+        /* ENERGY RINGS */
 
         this.universe.energyRing.material.opacity =
 
@@ -140,60 +265,62 @@ class AISystem {
 
             0.15 +
 
-            controls.chaos * 0.02;
-
-        /* CHAOS */
-
-        this.universe.scene.rotation.z =
-
-            Math.sin(time * 0.0002) *
-
-            controls.chaos *
-
-            0.01;
+            controls.chaos * 0.03;
 
         /* FLOAT */
 
         this.universe.scene.position.y =
 
-            Math.sin(time * 0.0006) * 1.2;
+            Math.sin(
+                time * 0.0006
+            ) * 1.2;
 
         /* PORTALS */
 
-        this.portals.forEach((portal, index) => {
+        this.portals.forEach(
+            (portal, index) => {
 
-            portal.rotation.x +=
-                0.001 + index * 0.0005;
+                portal.rotation.x +=
 
-            portal.rotation.y -=
-                0.0015 + index * 0.0004;
+                    0.001 +
 
-            portal.rotation.z +=
-                0.0008;
+                    index * 0.0005 *
 
-            const pulse =
+                    this.gravityShift;
 
-                1 +
+                portal.rotation.y -=
 
-                Math.sin(
-                    time * 0.002 +
-                    index
-                ) * 0.08;
+                    0.0015 +
 
-            portal.scale.set(
-                pulse,
-                pulse,
-                pulse
-            );
+                    index * 0.0004;
 
-            portal.material.opacity =
+                portal.rotation.z +=
+                    0.0008;
 
-                0.08 +
+                const pulse =
 
-                Math.sin(
-                    time * 0.003 +
-                    index
-                ) * 0.05;
-        });
+                    1 +
+
+                    Math.sin(
+                        time * 0.002 +
+                        index
+                    ) * 0.12;
+
+                portal.scale.set(
+                    pulse,
+                    pulse,
+                    pulse
+                );
+
+                portal.material.opacity =
+
+                    0.08 +
+
+                    Math.sin(
+                        time * 0.003 +
+                        index
+                    ) * 0.05;
+            }
+        );
     }
 }
