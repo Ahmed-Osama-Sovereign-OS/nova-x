@@ -1,5 +1,6 @@
+
 /* ================================= */
-/* NOVA X PARTICLE SYSTEM */
+/* NOVA X PARTICLE SYSTEM v0.2 */
 /* ================================= */
 
 class ParticleSystem {
@@ -26,7 +27,7 @@ class ParticleSystem {
 
     createParticles() {
 
-        const count = 1200;
+        const count = 1800;
 
         const geometry = new THREE.BufferGeometry();
 
@@ -36,16 +37,19 @@ class ParticleSystem {
 
         for (let i = 0; i < count; i++) {
 
-            const x = (Math.random() - 0.5) * 220;
-            const y = (Math.random() - 0.5) * 220;
-            const z = (Math.random() - 0.5) * 220;
+            const x = (Math.random() - 0.5) * 260;
+            const y = (Math.random() - 0.5) * 260;
+            const z = (Math.random() - 0.5) * 260;
 
             positions.push(x, y, z);
 
             /* COLORS */
 
-            const blue = 0.6 + Math.random() * 0.4;
-            const purple = 0.3 + Math.random() * 0.5;
+            const blue =
+                0.6 + Math.random() * 0.4;
+
+            const purple =
+                0.3 + Math.random() * 0.5;
 
             colors.push(
                 0.2,
@@ -70,25 +74,28 @@ class ParticleSystem {
             )
         );
 
-        const material = new THREE.PointsMaterial({
+        const material =
+            new THREE.PointsMaterial({
 
-            size: 0.6,
+                size: 0.35,
 
-            vertexColors: true,
+                vertexColors: true,
 
-            transparent: true,
+                transparent: true,
 
-            opacity: 0.9,
+                opacity: 1,
 
-            blending: THREE.AdditiveBlending,
+                blending:
+                    THREE.AdditiveBlending,
 
-            depthWrite: false
-        });
+                depthWrite: false
+            });
 
-        this.points = new THREE.Points(
-            geometry,
-            material
-        );
+        this.points =
+            new THREE.Points(
+                geometry,
+                material
+            );
 
         this.scene.add(this.points);
     }
@@ -99,46 +106,53 @@ class ParticleSystem {
 
     createConnections() {
 
-        const geometry = new THREE.BufferGeometry();
+        const geometry =
+            new THREE.BufferGeometry();
 
         const vertices = [];
 
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 300; i++) {
 
             vertices.push(
-                (Math.random() - 0.5) * 150,
-                (Math.random() - 0.5) * 150,
-                (Math.random() - 0.5) * 150
+
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180
             );
 
             vertices.push(
-                (Math.random() - 0.5) * 150,
-                (Math.random() - 0.5) * 150,
-                (Math.random() - 0.5) * 150
+
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180
             );
         }
 
         geometry.setAttribute(
+
             "position",
+
             new THREE.Float32BufferAttribute(
                 vertices,
                 3
             )
         );
 
-        const material = new THREE.LineBasicMaterial({
+        const material =
+            new THREE.LineBasicMaterial({
 
-            color: 0x33ccff,
+                color: 0x33ccff,
 
-            transparent: true,
+                transparent: true,
 
-            opacity: 0.15
-        });
+                opacity: 0.12
+            });
 
-        this.lines = new THREE.LineSegments(
-            geometry,
-            material
-        );
+        this.lines =
+            new THREE.LineSegments(
+                geometry,
+                material
+            );
 
         this.scene.add(this.lines);
     }
@@ -149,14 +163,19 @@ class ParticleSystem {
 
     setupMouse() {
 
-        window.addEventListener("mousemove", (e) => {
+        window.addEventListener(
+            "mousemove",
+            (e) => {
 
-            this.mouseX =
-                (e.clientX / window.innerWidth - 0.5);
+                this.mouseX =
+                    (e.clientX /
+                        window.innerWidth - 0.5);
 
-            this.mouseY =
-                (e.clientY / window.innerHeight - 0.5);
-        });
+                this.mouseY =
+                    (e.clientY /
+                        window.innerHeight - 0.5);
+            }
+        );
     }
 
     /* ============================= */
@@ -165,13 +184,15 @@ class ParticleSystem {
 
     update(time, gravity, chaos) {
 
-        /* PARTICLE ROTATION */
+        /* ROTATION */
 
-        this.points.rotation.y += 0.0005 * gravity;
+        this.points.rotation.y +=
+            0.0005 * gravity;
 
-        this.points.rotation.x += 0.0002;
+        this.points.rotation.x +=
+            0.0002;
 
-        /* REACT TO MOUSE */
+        /* MOUSE */
 
         this.points.rotation.y +=
             this.mouseX * 0.0008;
@@ -179,7 +200,7 @@ class ParticleSystem {
         this.points.rotation.x +=
             this.mouseY * 0.0008;
 
-        /* CONNECTION ROTATION */
+        /* CONNECTIONS */
 
         this.lines.rotation.y -=
             0.0002 * chaos;
@@ -187,12 +208,25 @@ class ParticleSystem {
         this.lines.rotation.z +=
             0.0001;
 
-        /* FLOATING EFFECT */
+        /* FLOATING */
 
         this.points.position.y =
             Math.sin(time * 0.0005) * 2;
 
         this.lines.position.y =
             Math.cos(time * 0.0003) * 1.5;
+
+        /* QUANTUM PULSE */
+
+        this.points.material.size =
+
+            0.35 +
+
+            Math.sin(time * 0.002) * 0.08;
+
+        /* ENERGY SHIFT */
+
+        this.points.rotation.z +=
+            0.00008 * chaos;
     }
 }
