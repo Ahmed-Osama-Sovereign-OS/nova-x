@@ -1,5 +1,5 @@
 /* ================================= */
-/* NOVA X UNIVERSE v0.2 */
+/* NOVA X UNIVERSE v0.5 */
 /* ================================= */
 
 class Universe {
@@ -8,12 +8,14 @@ class Universe {
 
         /* SCENE */
 
-        this.scene = new THREE.Scene();
+        this.scene =
+            new THREE.Scene();
 
-        this.scene.fog = new THREE.FogExp2(
-            0x020611,
-            0.003
-        );
+        this.scene.fog =
+            new THREE.FogExp2(
+                0x020611,
+                0.003
+            );
 
         /* CAMERA */
 
@@ -46,6 +48,7 @@ class Universe {
             });
 
         this.renderer.setPixelRatio(
+
             Math.min(
                 window.devicePixelRatio,
                 1.5
@@ -53,6 +56,7 @@ class Universe {
         );
 
         this.renderer.setSize(
+
             window.innerWidth,
             window.innerHeight
         );
@@ -96,7 +100,7 @@ class Universe {
         const blueLight =
             new THREE.PointLight(
                 0x00ccff,
-                35,
+                45,
                 300
             );
 
@@ -106,12 +110,14 @@ class Universe {
             0
         );
 
-        this.scene.add(blueLight);
+        this.scene.add(
+            blueLight
+        );
 
         const purpleLight =
             new THREE.PointLight(
                 0xaa55ff,
-                25,
+                30,
                 250
             );
 
@@ -121,7 +127,9 @@ class Universe {
             30
         );
 
-        this.scene.add(purpleLight);
+        this.scene.add(
+            purpleLight
+        );
     }
 
     /* ================================= */
@@ -230,6 +238,35 @@ class Universe {
             this.core
         );
 
+        /* INNER CORE */
+
+        const innerGeometry =
+            new THREE.SphereGeometry(
+                1.5,
+                32,
+                32
+            );
+
+        const innerMaterial =
+            new THREE.MeshBasicMaterial({
+
+                color: 0xffffff,
+
+                transparent: true,
+
+                opacity: 0.9
+            });
+
+        this.innerCore =
+            new THREE.Mesh(
+                innerGeometry,
+                innerMaterial
+            );
+
+        this.scene.add(
+            this.innerCore
+        );
+
         /* OUTER GLOW */
 
         const glowGeometry =
@@ -271,13 +308,17 @@ class Universe {
             () => {
 
                 this.camera.aspect =
+
                     window.innerWidth /
+
                     window.innerHeight;
 
                 this.camera.updateProjectionMatrix();
 
                 this.renderer.setSize(
+
                     window.innerWidth,
+
                     window.innerHeight
                 );
             }
@@ -290,7 +331,7 @@ class Universe {
 
     update(time, gravity, energy) {
 
-        /* CORE */
+        /* MAIN CORE */
 
         this.core.rotation.y +=
             0.01 * gravity;
@@ -298,11 +339,23 @@ class Universe {
         this.core.rotation.x +=
             0.003;
 
+        /* INNER CORE */
+
+        this.innerCore.rotation.y -=
+            0.03;
+
+        this.innerCore.rotation.x +=
+            0.02;
+
         /* PULSE */
 
         const pulse =
+
             1 +
-            Math.sin(time * 0.003) * 0.12;
+
+            Math.sin(
+                time * 0.003
+            ) * 0.12;
 
         this.core.scale.set(
             pulse,
@@ -310,11 +363,31 @@ class Universe {
             pulse
         );
 
+        /* INNER PULSE */
+
+        const innerPulse =
+
+            1 +
+
+            Math.sin(
+                time * 0.006
+            ) * 0.2;
+
+        this.innerCore.scale.set(
+            innerPulse,
+            innerPulse,
+            innerPulse
+        );
+
         /* GLOW */
 
         const glowScale =
+
             1.1 +
-            Math.sin(time * 0.0025) * 0.08;
+
+            Math.sin(
+                time * 0.0025
+            ) * 0.08;
 
         this.glow.scale.set(
             glowScale,
@@ -323,8 +396,12 @@ class Universe {
         );
 
         this.glow.material.opacity =
+
             0.08 +
-            Math.sin(time * 0.003) * 0.03;
+
+            Math.sin(
+                time * 0.003
+            ) * 0.03;
 
         /* RINGS */
 
@@ -343,9 +420,16 @@ class Universe {
         /* CAMERA */
 
         this.camera.position.y =
-            Math.sin(time * 0.0005) * 2;
 
-        this.camera.lookAt(0, 0, 0);
+            Math.sin(
+                time * 0.0005
+            ) * 2;
+
+        this.camera.lookAt(
+            0,
+            0,
+            0
+        );
     }
 
     /* ================================= */
